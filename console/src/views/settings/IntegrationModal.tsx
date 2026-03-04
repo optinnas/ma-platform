@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import api from "../../api";
 import { ProjectContext } from "../../contexts";
-import { useResolver } from "../../hooks";
 import type {
   Project,
   Provider,
@@ -148,10 +147,29 @@ export default function IntegrationModal({
   ...props
 }: IntegrationModalProps) {
   const [project] = useContext(ProjectContext);
-  const [options] = useResolver(
-    useCallback(async () => await api.providers.options(project.id), [project]),
-  );
+  const [options, setOptions] = useState<ProviderMeta[]>([]);
+  const [optionsLoading, setOptionsLoading] = useState(true);
+  const [optionsError, setOptionsError] = useState<string>();
   const [meta, setMeta] = useState<ProviderMeta | undefined>();
+
+  const loadOptions = useCallback(async () => {
+    setOptionsLoading(true);
+    setOptionsError(undefined);
+
+    try {
+      const data = await api.providers.options(project.id);
+      setOptions(data ?? []);
+    } catch {
+      setOptions([]);
+      setOptionsError("Failed to load integrations.");
+    } finally {
+      setOptionsLoading(false);
+    }
+  }, [project.id]);
+
+  useEffect(() => {
+    loadOptions().catch(() => {});
+  }, [loadOptions]);
 
   const derivedMeta = useMemo(
     () =>
@@ -203,6 +221,35 @@ export default function IntegrationModal({
           <p>
             To get started, pick one of the integrations from the list below.
           </p>
+
+          {optionsLoading && (
+            <Alert title="Loading integrations" variant="plain">
+              Please wait while available integrations are loaded.
+            </Alert>
+          )}
+
+          {!optionsLoading && optionsError && (
+            <>
+              <Alert title="Could not load integrations" variant="plain">
+                Please try again. If this persists, rebuild provider modules with
+                <strong> make modules</strong> and restart the backend.
+              </Alert>
+              <div style={{ marginTop: "10px" }}>
+                <Button variant="secondary" size="sm" onClick={() => loadOptions().catch(() => {})}>
+                  Retry
+                </Button>
+              </div>
+            </>
+          )}
+
+          {!optionsLoading && !optionsError && options.length === 0 && (
+            <Alert title="No integrations available" variant="plain">
+              No provider modules are currently loaded by the backend. Build
+              modules with <strong>make modules</strong> and restart
+              <strong> go run ./cmd/lunogram</strong>.
+            </Alert>
+          )}
+
           <TileGrid>
             {options?.map((option) => (
               <Tile

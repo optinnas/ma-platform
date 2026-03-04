@@ -576,9 +576,8 @@ export default function JourneyEditor() {
     const onDrop = useCallback<DragEventHandler>(async event => {
 
         event.preventDefault()
-        if (!wrapper.current || !flowInstance) return
+        if (!flowInstance) return
 
-        const bounds = wrapper.current.getBoundingClientRect()
         const payload: {
             type: string
             x: number
@@ -588,9 +587,9 @@ export default function JourneyEditor() {
 
         if (!type) return
 
-        const { x, y } = flowInstance.project({
-            x: event.clientX - bounds.left - (payload.x ?? 0),
-            y: event.clientY - bounds.top - (payload.y ?? 0),
+        const { x, y } = flowInstance.screenToFlowPosition({
+            x: event.clientX - (payload.x ?? 0),
+            y: event.clientY - (payload.y ?? 0),
         })
 
         const newStep = {

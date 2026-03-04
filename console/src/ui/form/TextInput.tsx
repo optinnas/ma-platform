@@ -124,10 +124,15 @@ export default function TextInput<X extends TextInputValue>({
             readOnly={readOnly}
             placeholder={placeholder}
             onChange={(event) => {
-              const inputValue =
-                typeof value === "number" || type === "number"
-                  ? event?.target.valueAsNumber
-                  : event?.target.value;
+              const rawValue = event?.target.value;
+              const numericValue = event?.target.valueAsNumber;
+              const isNumberInput =
+                typeof value === "number" || type === "number";
+              const inputValue = isNumberInput
+                ? rawValue === "" || rawValue == null || Number.isNaN(numericValue)
+                  ? undefined
+                  : numericValue
+                : rawValue;
               onChange?.(inputValue as X);
             }}
             onBlur={onBlur}

@@ -21,18 +21,21 @@ export default function RadioInput<X, P = X>({
     getValueKey = defaultGetValueKey,
 }: RadioInputProps<X, P>) {
     const id = useId()
+    const defaultValue = options?.[0] ? toValue(options[0]) : undefined
+    const selectedValue = value ?? defaultValue
     useEffect(() => {
-        if (!value && options[0]) {
-            setTimeout(() => {
-                onChange?.(toValue(options[0]))
+        if (value === undefined && defaultValue !== undefined) {
+            const timeout = setTimeout(() => {
+                onChange?.(defaultValue)
             }, 0)
+            return () => clearTimeout(timeout)
         }
-    }, [options, value, onChange, toValue])
+    }, [defaultValue, value, onChange])
 
     return (
         <RadioGroup
             onChange={onChange}
-            value={value}
+            value={selectedValue}
             disabled={disabled}
             id={id}
             className="options-group"

@@ -158,7 +158,7 @@ export function LocaleSelect({ onChange }: LocaleSelectProps) {
                                 {locales.map((locale) => (
                                     <CommandItem
                                         className="cursor-pointer"
-                                        key={locale.key}
+                                        key={locale.id}
                                         value={locale.key}
                                         onSelect={() => handleSelectChange(locale.key)}
                                     >

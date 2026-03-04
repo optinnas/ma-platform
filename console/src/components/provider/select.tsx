@@ -18,6 +18,13 @@ interface ProviderSelectProps {
   channel: ProviderGroup;
 }
 
+function normalizeChannel(channel: string): string {
+  if (channel === "text") {
+    return "sms";
+  }
+  return channel;
+}
+
 export function ProviderSelect({
   value,
   onChange,
@@ -33,7 +40,10 @@ export function ProviderSelect({
       setIsLoading(true);
       try {
         const result = await api.providers.all(project.id);
-        const filteredProviders = result.filter((provider) => provider.channel === channel);
+        const expectedChannel = normalizeChannel(channel);
+        const filteredProviders = result.filter(
+          (provider) => normalizeChannel(provider.channel) === expectedChannel,
+        );
         setProviders(filteredProviders);
 
         if (filteredProviders.length > 0 && !value) {

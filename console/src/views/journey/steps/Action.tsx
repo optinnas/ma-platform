@@ -28,7 +28,7 @@ export const actionStep: JourneyStepType<ActionConfig> = {
     }) {
         const { t } = useTranslation()
         const [campaign] = useResolver(useCallback(async () => {
-            if (campaign_id) {
+            if (campaign_id && campaign_id !== NIL) {
                 return await api.campaigns.get(projectId, campaign_id)
             }
             return null
@@ -69,7 +69,7 @@ export const actionStep: JourneyStepType<ActionConfig> = {
                     subtitle={t('send_campaign_desc')}
                     get={useCallback(async id => await api.campaigns.get(projectId, id), [projectId])}
                     search={useCallback(async q => await api.campaigns.search(projectId, { q, limit: 50, filter: { type: 'trigger' } }), [projectId])}
-                    value={value.campaign_id}
+                    value={value.campaign_id !== NIL ? value.campaign_id : undefined}
                     onChange={campaign_id => onChange({ ...value, campaign_id: campaign_id ?? NIL as UUID })}
                     required
                     createModalSize="large"

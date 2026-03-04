@@ -16,14 +16,14 @@ export default function ProjectOnboarding() {
     const [isLoading, setIsLoading] = useState(false)
 
     const [tools, setTools] = useState([
-        { id: 'wordpress', name: 'WordPress', icon: 'https://lunogram.com/sources/wordpress.svg', active: false },
-        { id: 'shopify', name: 'Shopify', icon: 'https://lunogram.com/sources/shopify.svg', active: false },
-        { id: 'javascript', name: 'JavaScript', icon: 'https://lunogram.com/sources/javascript.svg', active: false },
-        { id: 'mailchimp', name: 'Mailchimp', icon: 'https://lunogram.com/sources/mailchimp.svg', active: false },
-        { id: 'hubspot', name: 'HubSpot', icon: 'https://lunogram.com/sources/hubspot.svg', active: false },
-        { id: 'python', name: 'Python', icon: 'https://lunogram.com/sources/python.svg', active: false },
-        { id: 'odoo', name: 'Odoo', icon: 'https://lunogram.com/sources/odoo.svg', active: false },
-        { id: 'php', name: 'PHP', icon: 'https://lunogram.com/sources/php.svg', active: false },
+        { id: 'wordpress', name: 'WordPress', icon: '/sources/wordpress.svg', active: false },
+        { id: 'shopify', name: 'Shopify', icon: '/sources/shopify.svg', active: false },
+        { id: 'javascript', name: 'JavaScript', icon: '/sources/javascript.svg', active: false },
+        { id: 'mailchimp', name: 'Mailchimp', icon: '/sources/mailchimp.svg', active: false },
+        { id: 'hubspot', name: 'HubSpot', icon: '/sources/hubspot.svg', active: false },
+        { id: 'python', name: 'Python', icon: '/sources/python.svg', active: false },
+        { id: 'odoo', name: 'Odoo', icon: '/sources/odoo.svg', active: false },
+        { id: 'php', name: 'PHP', icon: '/sources/php.svg', active: false },
     ])
 
     useEffect(() => {

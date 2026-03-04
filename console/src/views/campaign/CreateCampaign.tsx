@@ -86,7 +86,7 @@ export function CreateCampaign({ open = false }: CreateCampaignProps) {
 
     return (
         <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
-            <DialogTrigger>
+            <DialogTrigger asChild>
                 <Button size="lg"><PlusIcon /> {t('campaign.create.action')}</Button>
             </DialogTrigger>
             <DialogContent>

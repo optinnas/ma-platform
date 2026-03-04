@@ -73,12 +73,13 @@ The API will be available at http://localhost:8080.
 ### Environment Variables
 
 ```bash
-MANAGEMENT_POSTGRES_URI=postgres://postgres:postgrespw@localhost:5432/management?sslmode=disable
-USERS_POSTGRES_URI=postgres://postgres:postgrespw@localhost:5432/users?sslmode=disable
-JOURNEY_POSTGRES_URI=postgres://postgres:postgrespw@localhost:5432/journey?sslmode=disable
+POSTGRES_MANAGEMENT_URI=postgres://postgres:postgrespw@localhost:5432/management?sslmode=disable
+POSTGRES_USERS_URI=postgres://postgres:postgrespw@localhost:5432/users?sslmode=disable
+POSTGRES_JOURNEY_URI=postgres://postgres:postgrespw@localhost:5432/journey?sslmode=disable
 REDIS_ADDRESS=redis://localhost:6379
 NATS_URL=nats://localhost:4222
 AUTH_DRIVER=basic
+AUTH_JWT_SECRET=dev-secret-change-in-production
 AUTH_BASIC_EMAIL=admin@localhost
 AUTH_BASIC_PASSWORD=admin
 ```

@@ -3,7 +3,6 @@ import type { AlertProps } from '../ui/Alert';
 import Alert from '../ui/Alert'
 import { Button } from '@/components/ui/button'
 import { logout } from '../utils'
-import { useClerk } from '@clerk/clerk-react'
 
 import './ErrorPage.css'
 
@@ -66,15 +65,13 @@ export default function ErrorPage({ status = 500 }: { status?: number }) {
 }
 
 export function AccessDenied() {
-    const { signOut } = useClerk()
-
     return (
         <ErrorAlert
             variant="warn"
             title="Access Denied"
             actions={
                 <>
-                    <Button onClick={async () => { await logout(signOut) }}>Logout</Button>
+                    <Button onClick={async () => { await logout() }}>Logout</Button>
                     <Button onClick={() => { window.location.href = '/' }}>Back</Button>
                 </>
             }

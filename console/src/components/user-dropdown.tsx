@@ -4,18 +4,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import { logout } from "@/utils";
-import { useClerk } from "@clerk/clerk-react";
 
 export function UserDropdown({
   user,
@@ -25,16 +21,11 @@ export function UserDropdown({
     email: string;
   };
 }) {
-  const { isMobile } = useSidebar();
-
-  // TODO: include the ability to handle other auth providers
-  const { signOut } = useClerk();
-
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger className="w-full">
+          <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
@@ -52,7 +43,7 @@ export function UserDropdown({
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuItem onSelect={async () => await logout(signOut)} className="cursor-pointer">
+            <DropdownMenuItem onSelect={async () => await logout()} className="cursor-pointer">
               <LogOut />
               Log out
             </DropdownMenuItem>

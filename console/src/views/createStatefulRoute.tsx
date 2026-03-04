@@ -32,7 +32,7 @@ export function createStatefulRoute<T extends { id: UUID }>({ context, path, api
         },
         element: context
             ? (
-                <StatefulLoaderContextProvider key={path} context={context}>
+                <StatefulLoaderContextProvider resetKey={path} context={context}>
                     {element}
                 </StatefulLoaderContextProvider>
             )
