@@ -43,19 +43,35 @@ func Manifest() int32 {
 			},
 			Config: &modules.JSONSchema{
 				Type: "object",
-				Properties: map[string]*modules.JSONSchema{
-					"data": {
-						Type: "object",
-						Properties: map[string]*modules.JSONSchema{
-							"accountSid":          {Type: "string", Title: "Twilio Account SID"},
-							"authToken":           {Type: "string", Title: "Twilio Auth Token", Format: "password"},
-							"messagingServiceSid": {Type: "string", Title: "Messaging Service SID", Description: "Optional Twilio Messaging Service SID for SMS"},
-							"fromPhone":           {Type: "string", Title: "Default SMS From Number", Description: "E.164 number, used when payload does not include From"},
-							"sendGridApiKey":      {Type: "string", Title: "SendGrid API Key", Format: "password", Description: "Required for email channel"},
-							"fromEmail":           {Type: "string", Title: "Default Email From Address", Description: "Used when payload From address is empty"},
-							"fromName":            {Type: "string", Title: "Default Email From Name", Description: "Optional default display name for From address"},
+				Properties: []modules.JSONSchemaProperty{
+					{
+						Name: "data",
+						Schema: &modules.JSONSchema{
+							Type: "object",
+							Properties: []modules.JSONSchemaProperty{
+								{
+									Name:   "accountSid",
+									Schema: &modules.JSONSchema{Type: "string", Title: "Account SID"},
+								},
+								{
+									Name:   "authToken",
+									Schema: &modules.JSONSchema{Type: "string", Title: "Auth Token", Format: "password"},
+								},
+								{
+									Name:   "default_from",
+									Schema: &modules.JSONSchema{Type: "string", Title: "Default From Number", Description: "Default sender phone number (for SMS) or email address (for email)"},
+								},
+								{
+									Name:   "default_from_name",
+									Schema: &modules.JSONSchema{Type: "string", Title: "Default From Name", Description: "Default sender display name (email only)"},
+								},
+								{
+									Name:   "default_from_locked",
+									Schema: &modules.JSONSchema{Type: "boolean", Title: "Lock From", Description: "Prevent templates from overriding the from value"},
+								},
+							},
+							Required: []string{"accountSid", "authToken"},
 						},
-						Required: []string{"accountSid", "authToken"},
 					},
 				},
 			},

@@ -1,13 +1,13 @@
-import { useEffect, useId } from 'react'
-import type { FieldPath, FieldValues } from 'react-hook-form'
-import { useController } from 'react-hook-form'
-import { RadioGroup } from '@headlessui/react'
-import type { ControlledInputProps, FieldBindingsProps, OptionsProps } from '../../types'
-import './RadioInput.css'
-import clsx from 'clsx'
-import { defaultGetOptionDisplay, defaultGetValueKey } from '../utils'
+import { useEffect, useId } from "react"
+import type { FieldPath, FieldValues } from "react-hook-form"
+import { useController } from "react-hook-form"
+import { RadioGroup } from "@headlessui/react"
+import type { ControlledInputProps, FieldBindingsProps, OptionsProps } from "../../types"
+import "./RadioInput.css"
+import clsx from "clsx"
+import { defaultGetOptionDisplay, defaultGetValueKey } from "../utils"
 
-interface RadioInputProps<T, O = T> extends ControlledInputProps<T>, OptionsProps<O, T> { }
+interface RadioInputProps<T, O = T> extends ControlledInputProps<T>, OptionsProps<O, T> {}
 
 export default function RadioInput<X, P = X>({
     disabled,
@@ -43,7 +43,7 @@ export default function RadioInput<X, P = X>({
             <RadioGroup.Label>
                 <span>
                     {label}
-                    {required && <span style={{ color: 'red' }}>&nbsp;*</span>}
+                    {required && <span style={{ color: "red" }}>&nbsp;*</span>}
                 </span>
             </RadioGroup.Label>
             {subtitle && <span className="label-subtitle">{subtitle}</span>}
@@ -55,9 +55,12 @@ export default function RadioInput<X, P = X>({
                         <RadioGroup.Option
                             key={getValueKey(value)}
                             value={value}
-                            className={({ active, checked, disabled }) => clsx(
-                                'option', { selected: checked, active, disabled },
-                            )}>{label}</RadioGroup.Option>
+                            className={({ active, checked, disabled }) =>
+                                clsx("option", { selected: checked, active, disabled })
+                            }
+                        >
+                            {label}
+                        </RadioGroup.Option>
                     )
                 })}
             </div>
@@ -71,9 +74,10 @@ RadioInput.Field = function RadioInputField<X extends FieldValues, P extends Fie
     required,
     ...rest
 }: FieldBindingsProps<RadioInputProps<any>, any, X, P>) {
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { field: { ref, ...field }, fieldState } = useController({
+    const {
+        field: { ref, ...field },
+        fieldState,
+    } = useController({
         control: form.control,
         name,
         rules: {
@@ -81,12 +85,5 @@ RadioInput.Field = function RadioInputField<X extends FieldValues, P extends Fie
         },
     })
 
-    return (
-        <RadioInput
-            {...rest}
-            {...field}
-            required={required}
-            error={fieldState.error?.message}
-        />
-    )
+    return <RadioInput {...rest} {...field} required={required} error={fieldState.error?.message} />
 }

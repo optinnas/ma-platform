@@ -13,7 +13,7 @@ import (
 	"github.com/lunogram/platform/internal/store"
 	"github.com/lunogram/platform/internal/store/journey"
 	"github.com/lunogram/platform/internal/store/management"
-	"github.com/lunogram/platform/internal/store/users"
+	"github.com/lunogram/platform/internal/store/subjects"
 	"go.uber.org/zap"
 )
 
@@ -42,9 +42,11 @@ func (srv *JourneysController) ListJourneys(w http.ResponseWriter, r *http.Reque
 		Offset: params.Offset.ToInt(),
 	}
 
+	search := params.Search.ToString()
+
 	logger.Info("listing journeys", zap.Int("limit", pagination.Limit), zap.Int("offset", pagination.Offset))
 
-	journeys, total, err := srv.jrny.ListJourneys(ctx, projectID, pagination)
+	journeys, total, err := srv.jrny.ListJourneys(ctx, projectID, pagination, search)
 	if err != nil {
 		logger.Error("failed to list journeys", zap.Error(err))
 		oapi.WriteProblem(w, err)
@@ -386,7 +388,7 @@ func (srv *JourneysController) SetJourneySteps(w http.ResponseWriter, r *http.Re
 	defer tx.Rollback() //nolint:errcheck
 
 	journeys := journey.NewJourneysStore(tx)
-	events := users.NewEventsStore(tx)
+	events := subjects.NewEventsStore(tx)
 
 	versionID, err := journeys.EnsureDraftVersion(ctx, journeyID)
 	if err != nil {
@@ -410,7 +412,7 @@ func (srv *JourneysController) SetJourneySteps(w http.ResponseWriter, r *http.Re
 	}
 
 	for externalID, eventName := range dependencies {
-		eventID, err := events.UpsertEvent(ctx, projectID, eventName)
+		eventID, err := events.UpsertEvent(ctx, projectID, eventName, subjects.SubjectTypeUser)
 		if err != nil {
 			logger.Error("failed to upsert event", zap.String("event", eventName), zap.Error(err))
 			oapi.WriteProblem(w, err)
