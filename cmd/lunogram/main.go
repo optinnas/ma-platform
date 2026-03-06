@@ -8,6 +8,7 @@ import (
 
 	"github.com/caarlos0/env/v10"
 	"github.com/cloudproud/graceful"
+	"github.com/joho/godotenv"
 	"github.com/lunogram/platform/internal/actions"
 	"github.com/lunogram/platform/internal/cluster"
 	"github.com/lunogram/platform/internal/cluster/consensus"
@@ -42,6 +43,8 @@ func main() {
 func run() error {
 	flag.Parse()
 	ctx := graceful.NewContext(context.Background())
+
+	_ = godotenv.Load()
 
 	logger, err := zap.NewDevelopment()
 	if err != nil {
